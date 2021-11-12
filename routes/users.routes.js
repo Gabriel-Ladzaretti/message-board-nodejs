@@ -106,6 +106,9 @@ router.get("/logout", (req, res) => {
     req.logout();
     req.flash("success_msg", "You are logged out.");
     res.redirect("/users/login");
+  } else {
+    req.flash("error_msg", "Please login first.");
+    res.redirect("back");
   }
 });
 module.exports = router;
