@@ -9,14 +9,14 @@ router.get("/", (req, res) => {
   res.render("welcome");
 });
 
-// Add page
+// Add a messages
 router.get("/add", ensureAuthenticated, (req, res) => {
   res.render("addmessage", { username: req.user.name });
 });
 
-// Dashboard
-router.get("/dashboard", ensureAuthenticated, (req, res) => {
-  res.render("dashboard", { username: req.user.name });
+// Delete a messages
+router.get("/delete", ensureAuthenticated, (req, res) => {
+  res.redirect(`/api/messages?username=${req.user.name}`);
 });
 
 module.exports = router;

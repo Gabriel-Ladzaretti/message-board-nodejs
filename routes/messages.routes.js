@@ -41,7 +41,10 @@ router.post("/", ensureAuthenticated, (req, res) => {
 
 // Retrieve all Messages from the database.
 router.get("/", (req, res) => {
-  Message.find({})
+  const username = req.query.username;
+  console.log(username);
+  const cond = username ? { author: { $regex: username, $options: "i" } } : {};
+  Message.find(cond)
     .lean()
     .exec(function (error, messages) {
       if (error)
