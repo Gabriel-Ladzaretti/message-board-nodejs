@@ -15,21 +15,21 @@
         </div>
       </div>
     {{/unless}}
-    {{#each messages as |blog|}}
+    {{#each messages as |message|}}
       <div class="col-md-6 col-lg-4 py-2">
-        <div class="card {{blog.color}} mb-3">
+        <div class="card {{message.color}} mb-3">
           <div class="card-header small"><i>By -</i>
-            <strong> {{blog.author}}</strong>
+            <strong> {{message.author}}</strong>
 
-            <div><i>On - </i> {{blog.date}}</div>
+            <div><i>On - </i> {{message.date}}</div>
           </div>
           <div class="card-body overflow-auto" style=" max-height: 500px;">
-            <h4 class="card-title">{{blog.title}}</h4>
-            <p class="card-text" style="white-space: pre-wrap;">{{blog.body}}</p>
+            <h4 class="card-title">{{message.title}}</h4>
+            <p class="card-text" style="white-space: pre-wrap;">{{message.body}}</p>
             
             {{#if ../username}}
               <form
-                action="/api/messages/{{blog._id}}?_method=DELETE"
+                action="/api/messages/{{message._id}}?_method=DELETE"
                 method="POST"
                 class="mt-3"
               >

@@ -6,8 +6,6 @@ const router = express.Router();
 
 // /api/message: GET, POST, DELETE
 // /api/message/:id: GET, PATCH, DELETE
-// /api/message/:id/comments: patch delete
-// /api/message/:id/comments/:_id delete
 
 // Create and Save a new Message
 router.post("/", ensureAuthenticated, (req, res) => {
@@ -58,7 +56,7 @@ router.get("/", (req, res) => {
 });
 
 // Delete a Message with a given id
-router.delete("/:id", (req, res) => {
+router.delete("/:id", ensureAuthenticated, (req, res) => {
   const id = req.params.id;
   Message.findByIdAndRemove(id)
     .then((data) => {
@@ -79,7 +77,7 @@ router.delete("/:id", (req, res) => {
 });
 
 // Update a Message with a given id
-router.patch("/:id", (req, res) => {
+router.patch("/:id", ensureAuthenticated, (req, res) => {
   if (!req.body) {
     return res.status(400).json({
       msg: "Data to update can not be empty!",
