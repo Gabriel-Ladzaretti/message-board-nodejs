@@ -66,6 +66,15 @@ app.use((req, res, next) => {
   next();
 });
 
+// Redirect http to https requests
+app.use((req, res, next) => {
+  if (req.header("x-forwarded-proto") !== "https") {
+    res.redirect(`https://${req.header("host")}${req.url}`);
+  } else {
+    next();
+  }
+});
+
 // Routes
 app.use("/", require("./routes/index"));
 app.use("/users", require("./routes/users.routes"));
