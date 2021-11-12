@@ -1,15 +1,15 @@
 const express = require("express");
 const { ensureAuthenticated } = require("../config/auth.config");
-const Blog = require("../models/Blog.model");
+const Message = require("../models/Message.model");
 
 const router = express.Router();
 
-// /api/blog: GET, POST, DELETE
-// /api/blog/:id: GET, PATCH, DELETE
-// /api/blog/:id/comments: patch delete
-// /api/blog/:id/comments/:_id delete
+// /api/message: GET, POST, DELETE
+// /api/message/:id: GET, PATCH, DELETE
+// /api/message/:id/comments: patch delete
+// /api/message/:id/comments/:_id delete
 
-// Create and Save a new Blog
+// Create and Save a new Message
 router.post("/", ensureAuthenticated, (req, res) => {
   if (!req.body.title || !req.body.body) {
     req.flash("error_msg", "Please fill all fields");
@@ -17,55 +17,56 @@ router.post("/", ensureAuthenticated, (req, res) => {
     return;
   }
 
-  // Create blog
-  const blog = new Blog({
+  // Create Message
+  const message = new Message({
     title: req.body.title,
     author: req.user.name,
     body: req.body.body,
+    color: req.body.color,
   });
 
-  // Save blog
-  blog
+  // Save Message
+  message
     .save()
     .then((data) => {
-      req.flash("success_msg", "Blog Successfully Posted!");
-      res.redirect("/api/blogs");
+      req.flash("success_msg", "Message Successfully Posted!");
+      res.redirect("/api/messages");
     })
     .catch((err) => {
       res.status(500).json({
-        msg: err.message || "Error creating the blog.",
+        msg: err.message || "Error creating the Message.",
       });
     });
 });
 
-// Retrieve all Blogs from the database.
+// Retrieve all Messages from the database.
 router.get("/", (req, res) => {
-  Blog.find({})
+  Message.find({})
     .lean()
-    .exec(function (error, blogs) {
+    .exec(function (error, messages) {
       if (error)
         res.status(500).json({
-          msg: err.message || "Could not retrieve all Blogs.",
+          msg: err.message || "Could not retrieve all Messages.",
         });
-      res.render("blogboard", { blogs });
+      res.render("Messageboard", { messages: messages.reverse() });
     });
 });
 
-// Retrieve a single Blog with id
+// Retrieve a single Message with id
 router.get("/:id", (req, res) => {
   const id = req.params.id;
 
-  Blog.findById(id)
+  Message.findById(id)
     .then((data) => {
-      if (!data) res.status(404).json({ msg: "No Blog with id=" + id });
+      if (!data) res.status(404).json({ msg: "No Message with id=" + id });
       else res.json(data);
     })
     .catch((err) => {
-      res.status(500).json({ msg: `Error while retrieving Blog id=${id}` });
+      res.status(500).json({ msg: `Error while retrieving Message id=${id}` });
     });
 });
 
-// Update a Blog with id
+// Update a Message with id
 router.patch("/:id", (req, res) => {
   if (!req.body) {
     return res.status(400).json({
@@ -80,22 +81,22 @@ router.patch("/:id", (req, res) => {
     delete req.body.comments;
   }
 
-  Blog.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+  Message.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
     .then((data) => {
       if (!data) {
         res.status(404).json({
-          msg: `Cannot update Blog id=${id}.`,
+          msg: `Cannot update Message id=${id}.`,
         });
-      } else res.json({ msg: "Blog updated." });
+      } else res.json({ msg: "Message updated." });
     })
     .catch((err) => {
       res.status(500).json({
-        msg: `Error updating Blog id=${id}`,
+        msg: `Error updating Message id=${id}`,
       });
     });
 });
 
-// Update Comments on Blog with id
+// Update Comments on Message with id
 router.patch("/:id/comments", (req, res) => {
   if (!req.body.comments) {
     return res.status(400).json({
@@ -104,7 +105,7 @@ router.patch("/:id/comments", (req, res) => {
   }
 
   const id = req.params.id;
-  Blog.findByIdAndUpdate(
+  Message.findByIdAndUpdate(
     id,
     { $push: { comments: req.body.comments } },
     { useFindAndModify: false }
@@ -112,22 +113,22 @@ router.patch("/:id/comments", (req, res) => {
     .then((data) => {
       if (!data) {
         res.status(404).json({
-          msg: `Cannot update comments on Blog id=${id}.`,
+          msg: `Cannot update comments on Message id=${id}.`,
         });
-      } else res.json({ msg: "Blog updated." });
+      } else res.json({ msg: "Message updated." });
     })
     .catch((err) => {
       res.status(500).json({
-        msg: err.message || `Error updating Blog id=${id}`,
+        msg: err.message || `Error updating Message id=${id}`,
       });
     });
 });
 
-// Delete Comments on Blog with id
+// Delete Comments on Message with id
 router.delete("/:id/comments", (req, res) => {
   const id = req.params.id;
 
-  Blog.findByIdAndUpdate(
+  Message.findByIdAndUpdate(
     id,
     { $set: { comments: [] } },
     { useFindAndModify: false }
@@ -135,22 +136,22 @@ router.delete("/:id/comments", (req, res) => {
     .then((data) => {
       if (!data) {
         res.status(404).json({
-          msg: `Cannot delete comments on Blog id=${id}.`,
+          msg: `Cannot delete comments on Message id=${id}.`,
         });
-      } else res.json({ msg: `Deleted comments on Blog id=${id}.` });
+      } else res.json({ msg: `Deleted comments on Message id=${id}.` });
     })
     .catch((err) => {
       res.status(500).json({
-        msg: err.message || `Error deleting comments on blog  id=${id}`,
+        msg: err.message || `Error deleting comments on Message  id=${id}`,
       });
     });
 });
 
-// Delete Comment with given id on Blog with id
+// Delete Comment with given id on Message with id
 router.delete("/:id/comments/:_id", (req, res) => {
   const id = req.params.id;
   const _id = req.params._id;
-  Blog.findByIdAndUpdate(
+  Message.findByIdAndUpdate(
     id,
     { $pull: { comments: { _id: _id } } },
     { useFindAndModify: false }
@@ -158,50 +159,50 @@ router.delete("/:id/comments/:_id", (req, res) => {
     .then((data) => {
       if (!data) {
         res.status(404).json({
-          msg: `Cannot delete comments on Blog id=${id}.`,
+          msg: `Cannot delete comments on Message id=${id}.`,
         });
-      } else res.json({ msg: `Deleted comments on Blog id=${id}.` });
+      } else res.json({ msg: `Deleted comments on Message id=${id}.` });
     })
     .catch((err) => {
       res.status(500).json({
-        msg: err.message || `Error deleting comments on blog  id=${id}`,
+        msg: err.message || `Error deleting comments on Message  id=${id}`,
       });
     });
 });
 
-// Delete a Blog with id
+// Delete a Message with id
 router.delete("/:id", (req, res) => {
   const id = req.params.id;
-  Blog.findByIdAndRemove(id)
+  Message.findByIdAndRemove(id)
     .then((data) => {
       if (!data) {
         res.status(404).json({
-          msg: `Blog post was not found!`,
+          msg: `Message post was not found!`,
         });
       } else {
         res.json({
-          msg: "Blog post was deleted successfully!",
+          msg: "Message post was deleted successfully!",
         });
       }
     })
     .catch((err) => {
       res.status(500).json({
-        msg: `Could not delete Blog id=${id}.`,
+        msg: `Could not delete Message id=${id}.`,
       });
     });
 });
 
-// Create a new Blog
+// Create a new Message
 router.delete("/", (req, res) => {
-  Blog.deleteMany({})
+  Message.deleteMany({})
     .then((data) => {
       res.send({
-        message: `${data.deletedCount} Blogs were deleted successfully!`,
+        message: `${data.deletedCount} Messages were deleted successfully!`,
       });
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Error occurred while removing Blogs.",
+        message: err.message || "Error occurred while removing Messages.",
       });
     });
 });

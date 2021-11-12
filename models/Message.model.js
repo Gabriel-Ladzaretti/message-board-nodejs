@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const blogSchema = new Schema({
+const messageSchema = new Schema({
   title: {
     type: String,
     required: true,
@@ -17,16 +17,17 @@ const blogSchema = new Schema({
   // comments: [{ body: String, date: Date }],
   date: { type: Date, default: Date.now },
   hidden: Boolean,
-  meta: {
-    votes: Number,
-    favs: Number,
-  },
+  color: { type: String, required: true },
+  // meta: {
+  //   votes: Number,
+  //   favs: Number,
+  // },
 });
 
-blogSchema.method("toJSON", function () {
+messageSchema.method("toJSON", function () {
   const { _id, ...object } = this.toObject();
   object.id = _id;
   return object;
 });
 
-module.exports = mongoose.model("Blog", blogSchema);
+module.exports = mongoose.model("Message", messageSchema);

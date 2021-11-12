@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="col-md-6 m-auto pb-1">{{> messages}}</div>
+  <div class="row g-4 justify-content-start ">
+    {{#unless messages}}
+      <div class="col-md-6 col-lg-4">
+        <div class="alert alert-dismissible alert-danger">
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+          ></button>
+          <strong>No Messages!</strong>
+          You can add messages
+          <a href="/add" class="alert-link">Here!</a>
+        </div>
+      </div>
+    {{/unless}}
+    {{#each messages as |blog|}}
+      <div class="col-md-6 col-lg-4 py-2" >
+        <div class="card {{blog.color}} bg-info mb-3" >
+          <div class="card-header small"><i>By -</i>
+            <strong> {{blog.author}}</strong>
+
+            <div><i>On - </i> {{blog.date}}</div>
+          </div>
+          <div class="card-body overflow-auto" style=" max-height: 250px;">
+            <h4 class="card-title">{{blog.title}}</h4>
+            <p class="card-text">{{blog.body}}</p>
+          </div>
+        </div></div>
+    {{/each}}
+  </div>
+</div>

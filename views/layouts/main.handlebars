@@ -14,12 +14,12 @@
     <title>Blogger</title>
   </head>
   <style>
-    .full-viewport{ min-height: calc(100vh - 320px) ; }
+    .full-viewport{ min-height: calc(100vh - 270px) ; }
   </style>
   <body class="bg-grey text-dark">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
       <div class="container">
-        <a class="navbar-brand" href="/">Blogger</a>
+        <a class="navbar-brand" href="/">Board</a>
         <button
           class="navbar-toggler collapsed"
           type="button"
@@ -35,12 +35,12 @@
         <div class="navbar-collapse collapse" id="navbarColor01" style="">
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
-              <a class="nav-link" href="/">Home
+              <a class="nav-link" href="/api/messages">Home
               </a>
             </li>
             <li class="nav-item">
               <li>
-                <a class="nav-link" href="/add">Add a Blog</a></li>
+                <a class="nav-link" href="/add">Add a Message</a></li>
             </li>
             <li class="nav-item">
               <li>
@@ -77,9 +77,9 @@
         </div>
       </div>
     </nav>
-
+    <div style="height: 56px;"></div>
     <div class="container">
-      <div class="full-viewport">{{{body}}}</div>
+      <div class="full-viewport py-5">{{{body}}}</div>
     </div>
   </body>
   <footer

@@ -94,7 +94,7 @@ router.post("/register", async (req, res) => {
 // Login Handle
 router.post("/login", (req, res, next) => {
   passport.authenticate("local", {
-    successRedirect: "/api/blogs",
+    successRedirect: "/api/messages",
     failureRedirect: "/users/login",
     failureFlash: true,
   })(req, res, next);
@@ -102,8 +102,10 @@ router.post("/login", (req, res, next) => {
 
 // Logout Handle
 router.get("/logout", (req, res) => {
-  req.logout();
-  req.flash("success_msg", "You are logged out.");
-  res.redirect("/users/login");
+  if (req.user) {
+    req.logout();
+    req.flash("success_msg", "You are logged out.");
+    res.redirect("/users/login");
+  }
 });
 module.exports = router;

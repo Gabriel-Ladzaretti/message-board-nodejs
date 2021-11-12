@@ -11,7 +11,7 @@ router.get("/", (req, res) => {
 
 // Add page
 router.get("/add", ensureAuthenticated, (req, res) => {
-  res.render("addblog", { username: req.user.name });
+  res.render("addmessage", { username: req.user.name });
 });
 
 // Dashboard
