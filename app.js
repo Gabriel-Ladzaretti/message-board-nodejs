@@ -4,6 +4,7 @@ const exphbs = require("express-handlebars");
 const mongoose = require("mongoose");
 const flash = require("connect-flash");
 const session = require("express-session");
+const methodOverride = require("method-override");
 const passport = require("passport");
 const app = express();
 
@@ -29,6 +30,9 @@ app.engine(
   })
 );
 app.set("view engine", "handlebars");
+
+// methodOverride
+app.use(methodOverride("_method"));
 
 // Parsers
 app.use(express.urlencoded({ extended: false }));
