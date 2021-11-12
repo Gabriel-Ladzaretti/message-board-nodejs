@@ -30,8 +30,9 @@ app.engine(
 );
 app.set("view engine", "handlebars");
 
-// Bodyparser
+// Parsers
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 // Express Session
 app.use(
@@ -63,7 +64,7 @@ app.use((req, res, next) => {
 
 // Routes
 app.use("/", require("./routes/index"));
-app.use("/users", require("./routes/user.routes"));
+app.use("/users", require("./routes/users.routes"));
 app.use("/api/blogs", require("./routes/blog.routes"));
 
 const PORT = process.env.PORT || 5000;

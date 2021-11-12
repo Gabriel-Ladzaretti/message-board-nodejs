@@ -1,23 +1,197 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link
       rel="stylesheet"
-      href="https://bootswatch.com/5/solar/bootstrap.min.css"
+      href="https://bootswatch.com/5/sandstone/bootstrap.min.css"
     />
-    <title>Node.js & Passport Login App</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
+    />
+    <title>Blogger</title>
   </head>
-  <body>
-    <div class="container">
-      {{{body}}}
-    </div>
+  <style>
+    .full-viewport{ min-height: calc(100vh - 320px) ; }
+  </style>
+  <body class="bg-grey text-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container">
+        <a class="navbar-brand" href="/">Blogger</a>
+        <button
+          class="navbar-toggler collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarColor01"
+          aria-controls="navbarColor01"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-      crossorigin="anonymous"
-    ></script>
+        <div class="navbar-collapse collapse" id="navbarColor01" style="">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Home
+              </a>
+            </li>
+            <li class="nav-item">
+              <li>
+                <a class="nav-link" href="/add">Add a Blog</a></li>
+            </li>
+            <li class="nav-item">
+              <li>
+                <a class="nav-link" href="/users/login">Login</a></li>
+            </li>
+             <li class="nav-item">
+              <li>
+                <a class="nav-link" href="/users/logout">Logout</a></li>
+            </li>
+
+            {{!-- <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                data-bs-toggle="dropdown"
+                href="#"
+                role="button"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >Reset</a>
+              <div class="dropdown-menu">
+                <a
+                  class="dropdown-item"
+                  data-bs-toggle="modal"
+                  data-bs-target="#stats-reset"
+                >Stats</a>
+                <a
+                  class="dropdown-item"
+                  data-bs-toggle="modal"
+                  data-bs-target="#emails-reset"
+                >Emails</a>
+              </div> --}}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="full-viewport">{{{body}}}</div>
+    </div>
   </body>
+  <footer
+    id="contact"
+    class="w-100 d-flex flex-shrink-0 quicksand-font overflow-hidden"
+  >
+    <div class="container">
+      <hr class="bg-danger border-3 border-bottom border-secondary" />
+      <div class="mb-3 text-center">
+        <div class="justify-content-center">
+          <a href="https://github.com/ladzaretti" target="_blank"><i
+              class="bi bi-github mx-1 px-2 link-secondary"
+            ></i></a>
+          <a
+            href="https://www.linkedin.com/in/gabriel-ladzaretti
+              "
+            class="link-secondary"
+            target="_blank"
+          ><i class="bi bi-linkedin mx-1 px-2"></i></a>
+          <a href="mailto:gabriel.ladzaretti@gmail.com"><i
+              class="bi bi-envelope-open-fill mx-1 px-2 link-secondary"
+            ></i></a>
+        </div>
+      </div>
+      <div class="row pb-4 px-5">
+        <p class="small text-muted mb-4 text-center">
+          Technologies used to build this site:
+          <br />
+          Node.js | Express.js | Passport.js | bcrypt.js | connect-flash |
+          handelbars | mongoose
+        </p>
+
+        <div class="col text-center m-auto">
+          <a
+            class="small text-decoration-none mb-0 link-secondary"
+            href="https://ladzaretti.herokuapp.com/"
+          > Gabriel Ladzaretti</a>
+          <p class="small text-muted mb-0 text-center">
+            2021 &copy; Copyrights. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  {{! Modal }}
+  <div class="modal fade" id="stats-reset">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Stats Reset Confirmation.</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Reset Stats data?</p>
+        </div>
+        <div class="modal-footer">
+          <a
+            type="button"
+            class="btn btn-primary"
+            href="/{{analytics}}/stats/reset"
+          >Reset</a>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="emails-reset">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Mail Reset Confirmation.</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Reset Email Backup?</p>
+        </div>
+        <div class="modal-footer">
+          <a
+            type="button"
+            class="btn btn-primary"
+            href="/{{analytics}}/emails/reset"
+          >Reset</a>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"
+  ></script>
 </html>

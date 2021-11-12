@@ -6,9 +6,15 @@ const blogSchema = new Schema({
     type: String,
     required: true,
   }, // String is shorthand for {type: String}
-  author: String,
-  body: String,
-  comments: [{ body: String, date: Date }],
+  author: {
+    type: String,
+    required: true,
+  },
+  body: {
+    type: String,
+    required: true,
+  },
+  // comments: [{ body: String, date: Date }],
   date: { type: Date, default: Date.now },
   hidden: Boolean,
   meta: {

@@ -16,7 +16,7 @@ router.get("/register", (req, res) => {
 });
 
 // Register Handle
-router.post("/register", (req, res) => {
+router.post("/register", async (req, res) => {
   const { name, email, password, password2 } = req.body;
   let errors = [];
 
@@ -34,6 +34,10 @@ router.post("/register", (req, res) => {
   if (password.length < 6) {
     errors.push({ msg: "Password should be atleast 6 characters" });
   }
+
+  // Check username
+  const username = await User.findOne({ name });
+  if (username) errors.push({ msg: "Username taken, Please try another one." });
 
   if (errors.length > 0) {
     res.render("register", {
@@ -90,7 +94,7 @@ router.post("/register", (req, res) => {
 // Login Handle
 router.post("/login", (req, res, next) => {
   passport.authenticate("local", {
-    successRedirect: "/dashboard",
+    successRedirect: "/api/blogs",
     failureRedirect: "/users/login",
     failureFlash: true,
   })(req, res, next);
