@@ -49,7 +49,7 @@ router.post("/register", async (req, res) => {
     });
   } else {
     // Validation Pass
-    User.findOne({ email }).then((user) => {
+    User.findOne({ email: email.toLowerCase() }).then((user) => {
       if (user) {
         // User exists
         errors.push({ msg: "Email is aleady registered" });
@@ -63,7 +63,7 @@ router.post("/register", async (req, res) => {
       } else {
         const user = new User({
           name,
-          email,
+          email: email.toLowerCase(),
           password,
         });
 
@@ -91,11 +91,17 @@ router.post("/register", async (req, res) => {
   }
 });
 
+function emailToLowerCase(req, res, next) {
+  req.body.email = req.body.email.toLowerCase();
+  next();
+}
 // Login Handle
-router.post("/login", (req, res, next) => {
+router.post("/login", emailToLowerCase, (req, res, next) => {
   passport.authenticate("local", {
     successRedirect: "/api/messages",
     failureRedirect: "/users/login",
+    badRequestMessage:
+      "Missing credentials, Please enter your Email and password.",
     failureFlash: true,
   })(req, res, next);
 });
