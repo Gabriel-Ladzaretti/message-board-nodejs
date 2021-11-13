@@ -14,8 +14,12 @@ const messageSchema = new Schema({
     type: String,
     required: true,
   },
+  private: {
+    type: Boolean,
+    required: true,
+  },
   // comments: [{ body: String, date: Date }],
-  date: { type: Date, default: Date.now },
+  created: { type: String, default: () => new Date(Date.now()).toString() },
   hidden: Boolean,
   color: { type: String, required: true },
   // meta: {

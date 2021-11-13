@@ -14,12 +14,15 @@
     <title>msg-lad | Your message board</title>
   </head>
   <style>
-    .full-viewport{ min-height: calc(100vh - 270px) ; }
+    .full-viewport{ min-height: calc(100vh - 56px - 210px ) ; } @media
+    (max-width: 400px) { .full-viewport{ min-height: calc(100vh - 56px - 250px )
+    ; }
+
   </style>
   <body class="bg-grey text-dark">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
       <div class="container">
-        <a class="navbar-brand" href="/">msg-lad</a>
+        <a class="navbar-brand" href="/">msg-BOARD</a>
         <button
           class="navbar-toggler collapsed"
           type="button"
@@ -42,19 +45,37 @@
               <li>
                 <a class="nav-link" href="/add">Add a Message</a></li>
             </li>
-            <li class="nav-item">
-              <li>
-                <a class="nav-link" href="/delete">Del a Message</a></li>
-            </li>
-            <li class="nav-item">
-              <li>
-                <a class="nav-link" href="/users/login">Login</a></li>
-            </li>
-            <li class="nav-item">
-              <li>
-                <a class="nav-link" href="/users/logout">Logout</a></li>
-            </li>
+
           </ul>
+          <div class="d-flex navbar-nav">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                data-bs-toggle="dropdown"
+                href="#"
+                role="button"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >Account</a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="/users/login">Login</a>
+                <a class="dropdown-item" href="/users/logout">Logout</a>
+                <div class="dropdown-divider"></div>
+                <a
+                  class="dropdown-item"
+                  href="/account?public=true&private=true"
+                >All messages</a>
+                <a
+                  class="dropdown-item"
+                  href="/account?public=false&private=true"
+                >Private messages</a>
+                <a
+                  class="dropdown-item"
+                  href="/account?public=true&private=false"
+                >Public messages</a>
+              </div>
+            </li>
+          </div>
         </div>
       </div>
     </nav>

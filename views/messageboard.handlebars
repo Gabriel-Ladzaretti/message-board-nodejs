@@ -1,32 +1,47 @@
 <div class="container">
-  <div class="col-md-6 m-auto pb-1">{{> messages}}</div>
-  <div class="row g-4 justify-content-start">
+  <div
+    class="h4 pb-3 mb-3 text-center"
+    style="text-decoration: underline gray;text-decoration-thickness: 15%;"
+  >{{title}}</div>
+  <div class="col-md-6 m-auto pb-1">
+    {{>messages}}
     {{#unless messages}}
-      <div class="col-md-6 col-lg-4">
-        <div class="alert alert-dismissible alert-danger">
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="alert"
-          ></button>
-          <strong>No Messages!</strong>
-          You can add messages
-          <a href="/add" class="alert-link">Here!</a>
-        </div>
+      <div class="alert alert-dismissible alert-danger">
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+        ></button>
+        <strong>No Messages!</strong>
+        You can add messages
+        <a href="/add" class="alert-link">Here!</a>
       </div>
     {{/unless}}
+  </div>
+  <div class="row justify-content-center">
+
     {{#each messages as |message|}}
       <div class="col-md-6 col-lg-4 py-2">
         <div class="card {{message.color}} mb-3">
-          <div class="card-header small"><i>By -</i>
-            <strong> {{message.author}}</strong>
-
-            <div><i>On - </i> {{message.date}}</div>
+          <div class="card-header small row justify-content-between">
+            <div class="col-9">
+              <i>By -</i>
+              <strong> {{message.author}}</strong>
+              <div><i>On - </i> {{message.created}}</div>
+            </div>
+            {{#if message.private}}
+              <div class="col text-end p-0 pt-1 pe-2"><span
+                  class="badge rounded-pill bg-primary"
+                >Private</span></div>
+            {{/if}}
           </div>
           <div class="card-body overflow-auto" style=" max-height: 500px;">
             <h4 class="card-title">{{message.title}}</h4>
-            <p class="card-text" style="white-space: pre-wrap;">{{message.body}}</p>
-            
+            <p
+              class="card-text"
+              style="white-space: pre-wrap;"
+            >{{message.body}}</p>
+
             {{#if ../username}}
               <form
                 action="/api/messages/{{message._id}}?_method=DELETE"

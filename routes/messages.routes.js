@@ -5,6 +5,7 @@ const Message = require("../models/Message.model");
 const router = express.Router();
 
 // /api/message: GET, POST, DELETE
+// /api/message/:username GET
 // /api/message/:id: GET, PATCH, DELETE
 
 // Create and Save a new Message
@@ -14,21 +15,27 @@ router.post("/", ensureAuthenticated, (req, res) => {
     res.redirect("/add");
     return;
   }
-
   // Create Message
   const message = new Message({
     title: req.body.title,
     author: req.user.name,
+    private: req.body.private ? true : false,
     body: req.body.body,
     color: req.body.color,
+    created: new Date(Date.now()).toString(),
   });
 
   // Save Message
   message
     .save()
     .then((data) => {
-      req.flash("success_msg", "Message Successfully Posted!");
-      res.redirect("/api/messages");
+      req.flash(
+        "success_msg",
+        `${
+          req.body.private ? "Private" : "Public"
+        } message successfully created!`
+      );
+      res.redirect("back");
     })
     .catch((err) => {
       res.status(500).json({
@@ -37,11 +44,49 @@ router.post("/", ensureAuthenticated, (req, res) => {
     });
 });
 
-// Retrieve all Messages from the database.
+// Retrieve all public Messages from the database.
 router.get("/", (req, res) => {
-  const username = req.query.username;
-  const cond = username ? { author: { $regex: username, $options: "i" } } : {};
-  Message.find(cond)
+  Message.find({ private: false })
+    .lean()
+    .exec(function (error, messages) {
+      if (error)
+        res.status(500).json({
+          msg: err.message || "Could not retrieve all Messages.",
+        });
+      res.render("messageboard", {
+        messages: messages.reverse(),
+        title: "PUBLIC MESSAGES",
+      });
+    });
+});
+
+// Retrieve all Messages from the database.
+router.get("/:username", ensureAuthenticated, (req, res) => {
+  const username = req.params.username;
+  const private = req.query.private === "true" && true;
+  const public = req.query.public === "true" && true;
+
+  // route protection
+  if (username !== req.user.name) {
+    res.status(403).send({ msg: "Forbidden" });
+    return;
+  }
+
+  // const cond = username ? { author: { $regex: username, $options: "i" } } : {};
+
+  // build db query condition
+  const cond = private && public ? { $in: [true, false] } : private;
+
+  let title;
+  if (private && public) {
+    title = "YOUR PRIVATE & PUBLIC MESSAGES";
+  } else if (private && !public) {
+    title = "YOUR PRIVATE MESSAGES";
+  } else {
+    title = "YOUR PUBLIC MESSAGES";
+  }
+
+  Message.find({ author: username, private: cond })
     .lean()
     .exec(function (error, messages) {
       if (error)
@@ -51,28 +96,40 @@ router.get("/", (req, res) => {
       res.render("messageboard", {
         messages: messages.reverse(),
         username: username,
+        title,
       });
     });
 });
-
 // Delete a Message with a given id
 router.delete("/:id", ensureAuthenticated, (req, res) => {
   const id = req.params.id;
-  Message.findByIdAndRemove(id)
+
+  Message.findById(id)
     .then((data) => {
-      if (!data) {
-        res.status(404).json({
-          msg: `Message post was not found!`,
-        });
-      } else {
-        req.flash("success_msg", "Message successfuly deleted!");
-        res.redirect(`/api/messages?username=${req.user.name}`);
+      // route protection
+      if (data.author !== req.user.name) {
+        res.status(403).send({ msg: "Forbidden" });
+        return;
       }
+      Message.findByIdAndRemove(id)
+        .then((data) => {
+          if (!data) {
+            res.status(404).json({
+              msg: `Message post was not found!`,
+            });
+          } else {
+            req.flash("success_msg", "Message successfuly deleted!");
+            res.redirect("back");
+          }
+        })
+        .catch((err) => {
+          res.status(500).json({
+            msg: `Could not delete Message id=${id}.`,
+          });
+        });
     })
     .catch((err) => {
-      res.status(500).json({
-        msg: `Could not delete Message id=${id}.`,
-      });
+      console.log(err);
     });
 });
 

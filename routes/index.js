@@ -15,8 +15,12 @@ router.get("/add", ensureAuthenticated, (req, res) => {
 });
 
 // Delete a messages
-router.get("/delete", ensureAuthenticated, (req, res) => {
-  res.redirect(`/api/messages?username=${req.user.name}`);
+router.get("/account", ensureAuthenticated, (req, res) => {
+  const query = new URLSearchParams({
+    public: req.query.public,
+    private: req.query.private,
+  });
+  res.redirect(`/api/messages/${req.user.name}?${query}`);
 });
 
 module.exports = router;
