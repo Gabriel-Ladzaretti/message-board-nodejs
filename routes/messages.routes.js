@@ -15,6 +15,7 @@ router.post("/", ensureAuthenticated, (req, res) => {
     res.redirect("/add");
     return;
   }
+  const private = req.body.private;
   // Create Message
   const message = new Message({
     title: req.body.title,
@@ -35,7 +36,11 @@ router.post("/", ensureAuthenticated, (req, res) => {
           req.body.private ? "Private" : "Public"
         } message successfully created!`
       );
-      res.redirect("back");
+      res.redirect(
+        private
+          ? `/api/messages/${req.user.name}?public=false&private=true`
+          : `/api/messages/${req.user.name}?public=true&private=false`
+      );
     })
     .catch((err) => {
       res.status(500).json({
