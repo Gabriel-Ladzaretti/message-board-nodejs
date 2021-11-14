@@ -14,10 +14,11 @@
     <title>msg-lad | Your message board</title>
   </head>
   <style>
-    .full-viewport{ min-height: calc(100vh - 56px - 210px ) ; } @media
-    (max-width: 400px) { .full-viewport{ min-height: calc(100vh - 56px - 250px )
-    ; }
-
+    .full-viewport{ min-height: calc(100vh - 56px - 215px ) ; } @media
+    (max-width: 990px) { .full-viewport{ min-height: calc(100vh - 56px - 230px )
+    ; }} @media (max-width: 450px) { .full-viewport{ min-height: calc(100vh -
+    56px - 250px ) ; }} @media (max-width: 360px) { .full-viewport{ min-height:
+    calc(100vh - 56px - 270px ) ; }}
   </style>
   <body class="bg-grey text-dark">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
@@ -111,7 +112,7 @@
           Technologies used to build this site:
           <br />
           Node.js | Express.js | Passport.js | bcrypt.js | connect-flash |
-          Handelbars.js | mongoose
+          Mongoose | Handelbars.js | Bootstrap 5
         </p>
 
         <div class="col text-center m-auto">

@@ -61,6 +61,7 @@ router.get("/", (req, res) => {
       res.render("messageboard", {
         messages: messages.reverse(),
         title: "PUBLIC MESSAGE BOARD",
+        username: req.user ? req.user.name : undefined,
       });
     });
 });
