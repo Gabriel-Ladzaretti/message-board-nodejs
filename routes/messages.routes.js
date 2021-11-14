@@ -60,7 +60,7 @@ router.get("/", (req, res) => {
         });
       res.render("messageboard", {
         messages: messages.reverse(),
-        title: "PUBLIC MESSAGES",
+        title: "PUBLIC MESSAGE BOARD",
       });
     });
 });
@@ -84,7 +84,7 @@ router.get("/:username", ensureAuthenticated, (req, res) => {
 
   let title;
   if (private && public) {
-    title = "YOUR PRIVATE & PUBLIC MESSAGES";
+    title = "ALL YOUR MESSAGES";
   } else if (private && !public) {
     title = "YOUR PRIVATE MESSAGES";
   } else {

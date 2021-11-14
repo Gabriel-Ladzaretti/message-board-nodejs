@@ -1,8 +1,15 @@
 <div class="container">
-  <div
-    class="h4 pb-3 mb-3 text-center"
-    style="text-decoration: underline gray;text-decoration-thickness: 15%;"
-  >{{title}}</div>
+  <div class="col-md-6 m-auto" >
+    {{#if username}}
+    <div
+      class="h6 text-center"
+    >Connected as {{username}}.</div>
+    {{/if}}
+    <div
+      class="h4 text-center"
+      style="text-decoration: underline gray;text-decoration-thickness: 20%;"
+    >{{title}}</div>
+  </div>
   <div class="col-md-6 m-auto pb-1">
     {{>messages}}
     {{#unless messages}}
