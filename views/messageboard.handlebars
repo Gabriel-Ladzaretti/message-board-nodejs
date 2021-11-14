@@ -49,7 +49,7 @@
               style="white-space: pre-wrap;"
             >{{message.body}}</p>
 
-            {{#if ../username}}
+            {{#if ../enableDelete}}
               <form
                 action="/api/messages/{{message._id}}?_method=DELETE"
                 method="POST"
