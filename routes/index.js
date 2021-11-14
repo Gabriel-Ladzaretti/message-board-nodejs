@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 5000;
 
 // Welcome page
 router.get("/", (req, res) => {
-  res.render("welcome");
+  res.render("welcome", { connected: req.user ? true : false });
 });
 
 // Add a messages

@@ -1,18 +1,29 @@
 <div class="row mt-5">
   <div class="col-md-6 m-auto">
     {{> messages}}
+    {{#if connected}}
     <div class="card card-body text-center">
-      <h1><i class="fab fa-node-js fa-3x"></i></h1>
+      <p>You are connected!</p>
+      <a
+        href="/users/logout"
+        class="btn btn-outline-warning d-block w-100 mb-2 pb-1"
+      >logout</a>
+      <a href="/api/messages" class="btn btn-outline-info d-block w-100 pb-1">Back to message board</a>
+    </div>
+    {{else}}
+    <div class="card card-body text-center">
       <p>Create an account or login</p>
       <a
         href="/users/register"
-        class="btn btn-primary d-block w-100 mb-2"
+        class="btn btn-primary d-block w-100 mb-2 pb-1"
       >Register</a>
       <a
         href="/users/login"
-        class="btn btn-secondary d-block w-100 mb-2"
+        class="btn btn-secondary d-block w-100 mb-2 pb-1"
       >Login</a>
-      <a href="/api/messages" class="btn btn-info d-block w-100">continue as guest</a>
+      <a href="/api/messages" class="btn btn-info d-block w-100 pb-1">continue as guest</a>
     </div>
+    {{/if}}
+
   </div>
 </div>
