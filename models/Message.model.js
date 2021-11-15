@@ -5,7 +5,7 @@ const messageSchema = new Schema({
   title: {
     type: String,
     required: true,
-  }, // String is shorthand for {type: String}
+  },
   author: {
     type: String,
     required: true,

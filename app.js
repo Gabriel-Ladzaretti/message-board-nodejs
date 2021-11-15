@@ -14,7 +14,7 @@ const app = express();
 require("./config/passport.config")(passport);
 
 // DB config
-const db = require("./config/keys.config").MongoURI;
+const db = require("./config/keys.config").DATABASE_URI;
 
 // Connect
 mongoose
@@ -69,7 +69,7 @@ app.use((req, res, next) => {
 });
 
 // Redirect http to https requests
-if (process.env.PORT) {
+if (process.env.NODE_ENV === "production") {
   app.use((req, res, next) => {
     if (req.header("x-forwarded-proto") !== "https") {
       res.redirect(`https://${req.header("host")}${req.url}`);

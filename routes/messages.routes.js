@@ -16,6 +16,7 @@ router.post("/", ensureAuthenticated, (req, res) => {
     return;
   }
   const private = req.body.private;
+
   // Create Message
   const message = new Message({
     title: req.body.title,
@@ -36,6 +37,7 @@ router.post("/", ensureAuthenticated, (req, res) => {
           req.body.private ? "Private" : "Public"
         } message successfully created!`
       );
+      // Redirect to user's private/public messages
       res.redirect(
         private
           ? `/api/messages/${req.user.name}?public=false&private=true`
@@ -61,14 +63,15 @@ router.get("/", (req, res) => {
       res.render("messageboard", {
         messages: messages.reverse(),
         title: "PUBLIC MESSAGE BOARD",
-        username: req.user ? req.user.name : undefined,
+        // username: req.user ? req.user.name : undefined,
+        username: req.user && req.user.name,
         verifiedUser: req.user && req.user.valid,
         enableDelete: false,
       });
     });
 });
 
-// Retrieve all Messages from the database.
+// Retrieve all user messages from the database.
 router.get("/:username", ensureAuthenticated, (req, res) => {
   const username = req.params.username;
   const private = req.query.private === "true" && true;
@@ -82,7 +85,7 @@ router.get("/:username", ensureAuthenticated, (req, res) => {
 
   // const cond = username ? { author: { $regex: username, $options: "i" } } : {};
 
-  // build db query condition
+  // Build db query condition
   const cond = private && public ? { $in: [true, false] } : private;
 
   let title;
@@ -110,6 +113,7 @@ router.get("/:username", ensureAuthenticated, (req, res) => {
       });
     });
 });
+
 // Delete a Message with a given id
 router.delete("/:id", ensureAuthenticated, (req, res) => {
   const id = req.params.id;
