@@ -10,7 +10,8 @@
       style="text-decoration: underline gray;text-decoration-thickness: 20%;"
     >{{title}}</div>
   </div>
-  <div class="col-md-6 m-auto pb-1">
+   {{!-- FIXME: fix padding on flash messages --}}
+  <div class="col-md-6 m-auto pb-1 px-1">
     {{>messages}}
     {{#unless messages}}
       <div class="alert alert-dismissible alert-danger">

@@ -156,10 +156,28 @@ router.get("/verify", ensureAuthenticated, (req, res) => {
 });
 
 // Login Page
-router.get("/login", (req, res) => {
+router.get("/login", async (req, res) => {
   if (req.user && req.query.code)
+    // user connected and there is verification attempt
     res.redirect(`/users/verify?code=${req.query.code}`);
-  else res.render("login", { code: req.query.code });
+  else {
+    if (req.query.code) {
+      const user = await User.findOne({ code: req.query.code });
+      if (user.valid) {
+        //FIXME: fix attempt when user is not logged in but is already valid.
+        req.flash("error_msg", "Verification link already been used.");
+        res.redirect("/api/messages");
+        return;
+      }
+    }
+    // render login page based on query
+    // regular if no verfication attempt
+    // otherwise ver attempt
+    res.render("login", {
+      code: req.query.code,
+      message: "Please login to complete account verification!",
+    });
+  }
 });
 
 // Login Handle
