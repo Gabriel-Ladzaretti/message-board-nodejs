@@ -6,11 +6,20 @@ const PORT = process.env.PORT || 5000;
 
 // Welcome page
 router.get("/", (req, res) => {
-  res.render("welcome", { connected: req.user ? true : false });
+  res.render("welcome", {
+    connected: req.user ? true : false,
+    valid: req.user ? req.user.valid : false,
+  });
 });
 
 // Add a messages
 router.get("/add", ensureAuthenticated, (req, res) => {
+  // check if validated user
+  if (!req.user.valid) {
+    req.flash("error_msg", "Please verify your account first!");
+    res.redirect("/");
+    return;
+  }
   res.render("addmessage", { username: req.user.name });
 });
 

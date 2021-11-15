@@ -8,6 +8,8 @@ const methodOverride = require("method-override");
 const passport = require("passport");
 const app = express();
 
+//TODO: create a gmail account for emailing
+
 // Passport config
 require("./config/passport.config")(passport);
 

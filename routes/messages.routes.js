@@ -62,6 +62,7 @@ router.get("/", (req, res) => {
         messages: messages.reverse(),
         title: "PUBLIC MESSAGE BOARD",
         username: req.user ? req.user.name : undefined,
+        verifiedUser: req.user && req.user.valid,
         enableDelete: false,
       });
     });
@@ -103,6 +104,7 @@ router.get("/:username", ensureAuthenticated, (req, res) => {
       res.render("messageboard", {
         messages: messages.reverse(),
         username: username,
+        verifiedUser: req.user && req.user.valid,
         title,
         enableDelete: true,
       });

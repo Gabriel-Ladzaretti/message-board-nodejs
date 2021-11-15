@@ -2,9 +2,9 @@
   <div class="col-md-6 m-auto" >
    
     <div
-      class="h6 text-center"
-    > {{#if username}}Connected as {{username}}{{else}}Not connected{{/if}}.</div>
-   
+      class="h6 text-center mb-3"
+    > {{#if username}}Connected as <strong>{{username}}</strong>.<br>{{#unless verifiedUser}}unverified account.{{/unless}}{{else}}Not connected.{{/if}}</div>
+  
     <div
       class="h4 text-center"
       style="text-decoration: underline gray;text-decoration-thickness: 20%;"
