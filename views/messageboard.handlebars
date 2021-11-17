@@ -31,17 +31,19 @@
     {{#each messages as |message|}}
       <div class="col-md-6 col-lg-4 py-2">
         <div class="card {{message.color}} mb-3">
-          <div class="card-header small row justify-content-between">
-            <div class="col-9">
-              <i>By -</i>
-              <strong> {{message.author}}</strong>
-              <div><i>On - </i> {{message.created}}</div>
+          <div class="card-header">
+            <div class="small row justify-content-between">
+              <div class="col-9">
+                <i>By -</i>
+                <strong> {{message.author}}</strong>
+                <div><i>On - </i> {{message.created}}</div>
+              </div>
+              {{#if message.private}}
+                <div class="col text-end p-0 pt-1 pe-2"><span
+                    class="badge rounded-pill bg-primary"
+                  >Private</span></div>
+              {{/if}}
             </div>
-            {{#if message.private}}
-              <div class="col text-end p-0 pt-1 pe-2"><span
-                  class="badge rounded-pill bg-primary"
-                >Private</span></div>
-            {{/if}}
           </div>
           <div class="card-body overflow-auto" style=" max-height: 500px;">
             <h4 class="card-title">{{message.title}}</h4>
