@@ -37,6 +37,11 @@ router.post("/", ensureAuthenticated, (req, res) => {
           req.body.private ? "Private" : "Public"
         } message successfully created!`
       );
+      if (!req.body.private)
+        req.flash(
+          "error_msg",
+          "Message will be reviewed before getting posted."
+        );
       // Redirect to user's private/public messages
       res.redirect(
         private
@@ -53,7 +58,7 @@ router.post("/", ensureAuthenticated, (req, res) => {
 
 // Retrieve all public Messages from the database.
 router.get("/", (req, res) => {
-  Message.find({ private: false })
+  Message.find({ private: false, reviewed: true })
     .lean()
     .exec(function (error, messages) {
       if (error)

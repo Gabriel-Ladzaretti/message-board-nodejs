@@ -18,6 +18,11 @@ const messageSchema = new Schema({
     type: Boolean,
     required: true,
   },
+  reviewed: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
   // comments: [{ body: String, date: Date }],
   created: { type: String, default: () => new Date(Date.now()).toString() },
   hidden: Boolean,
