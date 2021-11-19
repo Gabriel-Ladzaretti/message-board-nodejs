@@ -143,13 +143,12 @@ router.get("/:username", ensureAuthenticated, (req, res) => {
 // Delete a Message with a given id
 router.delete("/:id", ensureAuthenticated, (req, res) => {
   const id = req.params.id;
-  console.log(req.user);
 
   Message.findById(id)
     .then((data) => {
       // route protection
       if (
-        !(data.author === req.user.name || req.user._id === process.env.ADMIN)
+        !(data.author === req.user.name || req.user.name === process.env.ADMIN)
       ) {
         res.status(403).send({ msg: "Forbidden" });
         return;
