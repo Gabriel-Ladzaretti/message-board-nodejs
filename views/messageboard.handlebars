@@ -65,6 +65,19 @@
                 />
               </form>
             {{/if}}
+            {{#if ../enableReview}}
+              <form
+                action="/api/messages/{{message._id}}"
+                method="POST"
+                class="mt-3"
+              >
+                <input
+                  type="submit"
+                  class="float-end btn btn-info me-2"
+                  value="Publish"
+                />
+              </form>
+            {{/if}}
           </div>
         </div></div>
     {{/each}}

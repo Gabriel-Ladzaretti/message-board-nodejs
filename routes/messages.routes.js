@@ -102,7 +102,27 @@ router.get("/:username", ensureAuthenticated, (req, res) => {
     title = "YOUR PUBLIC MESSAGES";
   }
 
-  Message.find({ author: username, private: cond })
+  let query = { author: username, private: cond };
+  let enableReview = false;
+
+  // ADMIN account
+  if (username === process.env.ADMIN) {
+    if (private && public) {
+      // ALL PUBLISHED PUBLIC MESSAGES
+      title = "ALL PUBLISHED PUBLIC MESSAGES";
+      enableReview = false;
+      query = { reviewed: true, private: false };
+    } else if (private && !public) {
+      // YOUR PRIVATE MESSAGES"
+    } else {
+      // UNPUBLISHED PUBLIC MESSAGES
+      title = "UNPUBLISHED PUBLIC MESSAGES";
+      enableReview = true;
+      query = { reviewed: false, private: false };
+    }
+  }
+
+  Message.find(query)
     .lean()
     .exec(function (error, messages) {
       if (error)
@@ -115,6 +135,7 @@ router.get("/:username", ensureAuthenticated, (req, res) => {
         verifiedUser: req.user && req.user.valid,
         title,
         enableDelete: true,
+        enableReview,
       });
     });
 });
@@ -122,11 +143,14 @@ router.get("/:username", ensureAuthenticated, (req, res) => {
 // Delete a Message with a given id
 router.delete("/:id", ensureAuthenticated, (req, res) => {
   const id = req.params.id;
+  console.log(req.user);
 
   Message.findById(id)
     .then((data) => {
       // route protection
-      if (data.author !== req.user.name) {
+      if (
+        !(data.author === req.user.name || req.user._id === process.env.ADMIN)
+      ) {
         res.status(403).send({ msg: "Forbidden" });
         return;
       }
@@ -149,6 +173,27 @@ router.delete("/:id", ensureAuthenticated, (req, res) => {
     })
     .catch((err) => {
       console.log(err);
+    });
+});
+
+// Publish unreviewed message
+router.post("/:id", ensureAuthenticated, (req, res) => {
+  const id = req.params.id;
+  Message.findByIdAndUpdate(id, { reviewed: true })
+    .then((data) => {
+      if (!data) {
+        res.status(404).json({
+          msg: `Message post was not found!`,
+        });
+      } else {
+        req.flash("success_msg", "Messages Published!");
+        res.redirect("back");
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        msg: `Could not publish Message id=${id}.`,
+      });
     });
 });
 
