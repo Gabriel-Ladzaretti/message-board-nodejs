@@ -143,7 +143,6 @@ router.get("/:username", ensureAuthenticated, (req, res) => {
 // Delete a Message with a given id
 router.delete("/:id", ensureAuthenticated, (req, res) => {
   const id = req.params.id;
-
   Message.findById(id)
     .then((data) => {
       // route protection
