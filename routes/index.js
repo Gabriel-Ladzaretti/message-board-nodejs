@@ -1,8 +1,6 @@
 const express = require("express");
-const fetch = require("node-fetch");
 const { ensureAuthenticated } = require("../config/auth.config");
 const router = express.Router();
-const PORT = process.env.PORT || 5000;
 
 // Welcome page
 router.get("/", (req, res) => {

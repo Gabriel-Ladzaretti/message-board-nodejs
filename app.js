@@ -81,30 +81,30 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // Ping self
-const pingSelf = () => {
-  const options = {
-    host: process.env.HOST,
-    port: 80,
-    path: "/",
-  };
-  http.get(options, (res) => {
-    res
-      .on("data", (chunk) => {
-        try {
-          console.log("HEROKU RESPONSE: " + chunk);
-        } catch (err) {
-          console.log(err.message);
-        }
-      })
-      .on("error", function (err) {
-        console.log("Error: " + err.message);
-      });
-  });
-};
+// const pingSelf = () => {
+//   const options = {
+//     host: process.env.HOST,
+//     port: 80,
+//     path: "/",
+//   };
+//   http.get(options, (res) => {
+//     res
+//       .on("data", (chunk) => {
+//         try {
+//           console.log("HEROKU RESPONSE: " + chunk);
+//         } catch (err) {
+//           console.log(err.message);
+//         }
+//       })
+//       .on("error", function (err) {
+//         console.log("Error: " + err.message);
+//       });
+//   });
+// };
 
-if (process.env.NODE_ENV === "production") {
-  setInterval(pingSelf, MIN * 20);
-}
+// if (process.env.NODE_ENV === "production") {
+//   setInterval(pingSelf, MIN * 20);
+// }
 
 // Routes
 app.use("/", require("./routes/index"));
